@@ -1,3 +1,4 @@
+import type { LucideIcon } from "lucide-react";
 import {
   ArrowRight,
   Droplets,
@@ -94,7 +95,7 @@ const faqs = [
 ];
 
 const container = "mx-auto max-w-6xl px-4 sm:px-6 lg:px-8";
-const iconLibrary = {
+const iconLibrary: Record<string, LucideIcon> = {
   sparkles: Sparkles,
   droplets: Droplets,
   leaf: Leaf,
@@ -311,10 +312,8 @@ export default async function Home() {
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {servicesToRender.map((service) => {
-            const Icon =
-              (service.icon &&
-                iconLibrary[service.icon as keyof typeof iconLibrary]) ??
-              Sparkles;
+            const Icon: LucideIcon =
+              (service.icon && iconLibrary[service.icon]) ?? Sparkles;
             return (
               <Card key={service._id} className="h-full">
                 <CardHeader>
