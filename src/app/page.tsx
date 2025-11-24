@@ -18,119 +18,61 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { sanityClient } from "@/lib/sanity.client";
+import {
+  blogPostsQuery,
+  galleryEntriesQuery,
+  homeHeroQuery,
+  processStepsQuery,
+  servicesQuery,
+  testimonialsQuery,
+} from "@/lib/sanity.queries";
+
+type SanityService = {
+  _id: string;
+  title: string;
+  summary?: string;
+  highlights?: string[];
+  icon?: string;
+};
+
+type SanityProcessStep = {
+  _id: string;
+  title: string;
+  description?: string;
+};
+
+type SanityTestimonial = {
+  _id: string;
+  quote: string;
+  customerName: string;
+  location?: string;
+  serviceTitle?: string;
+};
+
+type SanityGalleryEntry = {
+  _id: string;
+  title: string;
+  location?: string;
+  beforeImageUrl?: string;
+  afterImageUrl?: string;
+  notes?: string[];
+};
+
+type SanityBlogPost = {
+  _id: string;
+  title: string;
+  excerpt?: string;
+  category?: string;
+  readingTime?: number;
+  slug?: { current: string };
+};
 
 const stats = [
   { label: "Homes refreshed", value: "2,400+" },
   { label: "Average rating", value: "4.9 / 5" },
   { label: "Dry time", value: "In 4 hours" },
   { label: "Eco-safe products", value: "100%" },
-];
-
-const services = [
-  {
-    title: "Whole-home steam cleaning",
-    description:
-      "Deep extraction cleaning with pH-balanced rinse for living rooms, bedrooms, and hallways.",
-    highlights: ["Traffic lane removal", "Fabric protectant", "Fast dry"],
-    icon: Sparkles,
-  },
-  {
-    title: "Upholstery & area rugs",
-    description:
-      "Low-moisture tools restore sofas, sectionals, and delicate wool rugs without overwetting.",
-    highlights: ["Hand groomed fibers", "Neutralizing rinse", "Pet-odor safe"],
-    icon: Droplets,
-  },
-  {
-    title: "Pet treatment & stain rescue",
-    description:
-      "UV inspection, enzyme flush, and deodorizing fog to permanently neutralize pet accidents.",
-    highlights: [
-      "Sub-surface extraction",
-      "Targeted enzymes",
-      "Air scrub add-on",
-    ],
-    icon: Leaf,
-  },
-];
-
-const steps = [
-  {
-    title: "Request a quote",
-    detail: "Share square footage, fiber type, and any pet or stain notes.",
-  },
-  {
-    title: "Technician dispatch",
-    detail:
-      "Uniformed IICRC tech arrives on time with truck-mounted equipment.",
-  },
-  {
-    title: "Flawless finish",
-    detail:
-      "We protect corners, groom fibers, and send you a gallery recap before we leave.",
-  },
-];
-
-const testimonials = [
-  {
-    quote:
-      "They removed three-year-old pet stains and left our home smelling neutral, not perfumey. The follow-up gallery was perfect for documenting our move-out.",
-    name: "Vanessa Ortiz",
-    location: "South Austin",
-    service: "Pet treatment + carpet refresh",
-  },
-  {
-    quote:
-      "Never had faster dry times. We booked the maintenance plan and love the consistent crew and reminders.",
-    name: "Marcus & Janelle",
-    location: "Round Rock",
-    service: "Quarterly steam cleaning",
-  },
-];
-
-const galleryHighlights = [
-  {
-    id: 1,
-    area: "Modern living room",
-    image:
-      "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=900&q=80",
-    result: "Removed red wine staining and restored bright neutrals.",
-  },
-  {
-    id: 2,
-    area: "High-rise bedroom",
-    image:
-      "https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?auto=format&fit=crop&w=900&q=80",
-    result: "Low-profile wool rug refreshed with fiber-safe rinse.",
-  },
-  {
-    id: 3,
-    area: "Family media room",
-    image:
-      "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=900&q=80",
-    result: "Pet odor neutralized and guard applied to seating area.",
-  },
-];
-
-const blogHighlights = [
-  {
-    title: "How to prep your carpets before the crew arrives",
-    description:
-      "A 15-minute checklist to help us clean faster and protect your belongings.",
-    readingTime: "5 min read",
-  },
-  {
-    title: "Understanding dry times and HVAC best practices",
-    description:
-      "Tips to circulate air, protect fibers, and keep humidity in check after a service.",
-    readingTime: "6 min read",
-  },
-  {
-    title: "Choosing between steam and low-moisture cleaning",
-    description:
-      "We break down when each method is best for your carpet type or rug construction.",
-    readingTime: "8 min read",
-  },
 ];
 
 const faqs = [
@@ -152,8 +94,107 @@ const faqs = [
 ];
 
 const container = "mx-auto max-w-6xl px-4 sm:px-6 lg:px-8";
+const iconLibrary = {
+  sparkles: Sparkles,
+  droplets: Droplets,
+  leaf: Leaf,
+};
 
-export default function Home() {
+export const revalidate = 60 * 30; // 30 minutes
+
+async function fetchHomeData() {
+  const [hero, services, steps, testimonials, gallery, posts] =
+    await Promise.all([
+      sanityClient.fetch(homeHeroQuery),
+      sanityClient.fetch<SanityService[]>(servicesQuery),
+      sanityClient.fetch<SanityProcessStep[]>(processStepsQuery),
+      sanityClient.fetch<SanityTestimonial[]>(testimonialsQuery),
+      sanityClient.fetch<SanityGalleryEntry[]>(galleryEntriesQuery),
+      sanityClient.fetch<SanityBlogPost[]>(blogPostsQuery),
+    ]);
+
+  return { hero, services, steps, testimonials, gallery, posts };
+}
+
+export default async function Home() {
+  const { hero, services, steps, testimonials, gallery, posts } =
+    await fetchHomeData();
+
+  const heroContent = hero ?? {
+    title: "Austin's freshest carpet cleaning experience.",
+    subtitle:
+      "Eco-friendly chemistry, gallery-worthy results, and real humans who care for every fiber in your home.",
+    serviceAreas: ["Austin", "Round Rock", "Cedar Park"],
+    primaryCtaLabel: "Book a visit",
+    primaryCtaHref: "#contact",
+    secondaryCtaLabel: "View gallery",
+    secondaryCtaHref: "/gallery",
+  };
+
+  const heroBadge = heroContent.serviceAreas?.join(" · ");
+
+  const servicesToRender = services?.length
+    ? services
+    : [
+        {
+          _id: "fallback-service",
+          title: "Whole-home steam cleaning",
+          summary:
+            "Deep extraction cleaning with pH-balanced rinse for living rooms, bedrooms, and hallways.",
+          highlights: ["Traffic lane removal", "Fabric protectant", "Fast dry"],
+          icon: "sparkles",
+        },
+      ];
+
+  const stepsToRender = steps?.length
+    ? steps
+    : [
+        {
+          _id: "step-1",
+          title: "Request a quote",
+          description: "Share square footage, fiber type, and any pet notes.",
+        },
+      ];
+
+  const testimonialsToRender = testimonials?.length
+    ? testimonials
+    : [
+        {
+          _id: "testimonial-1",
+          quote:
+            "They removed three-year-old pet stains and left our home smelling neutral, not perfumey.",
+          customerName: "Vanessa Ortiz",
+          location: "South Austin",
+          serviceTitle: "Pet treatment + carpet refresh",
+        },
+      ];
+
+  const galleryToRender = gallery?.length
+    ? gallery.slice(0, 3)
+    : [
+        {
+          _id: "gallery-1",
+          title: "Modern living room",
+          location: "Austin",
+          afterImageUrl:
+            "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=900&q=80",
+          notes: ["Removed staining and restored bright neutrals."],
+        },
+      ];
+
+  const postsToRender = posts?.length
+    ? posts.slice(0, 3)
+    : [
+        {
+          _id: "post-1",
+          title: "How to prep your carpets before the crew arrives",
+          excerpt:
+            "A 15-minute checklist to help us clean faster and protect your belongings.",
+          category: "Maintenance",
+          readingTime: 5,
+        },
+      ];
+
   return (
     <div className="space-y-24 py-12 lg:py-16">
       <section
@@ -161,21 +202,23 @@ export default function Home() {
       >
         <div className="space-y-8">
           <Badge className="rounded-full bg-primary/10 text-primary">
-            Austin · Round Rock · Cedar Park
+            {heroBadge || "Austin · Round Rock · Cedar Park"}
           </Badge>
           <div className="space-y-4">
             <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
-              Austin&apos;s freshest carpet cleaning experience.
+              {heroContent.title}
             </h1>
             <p className="text-lg text-muted-foreground">
-              Eco-friendly chemistry, gallery-worthy results, and real humans
-              who care for every fiber in your home.
+              {heroContent.subtitle}
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
             <Button asChild className="rounded-full">
-              <a href="#contact" className="flex items-center gap-2">
-                Book a visit
+              <a
+                href={heroContent.primaryCtaHref ?? "#contact"}
+                className="flex items-center gap-2"
+              >
+                {heroContent.primaryCtaLabel ?? "Book a visit"}
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </a>
             </Button>
@@ -184,8 +227,11 @@ export default function Home() {
               variant="outline"
               className="rounded-full border-dashed"
             >
-              <Link href="/gallery" className="flex items-center gap-2">
-                View gallery
+              <Link
+                href={heroContent.secondaryCtaHref ?? "/gallery"}
+                className="flex items-center gap-2"
+              >
+                {heroContent.secondaryCtaLabel ?? "View gallery"}
                 <Sparkles className="h-4 w-4" aria-hidden="true" />
               </Link>
             </Button>
@@ -208,17 +254,23 @@ export default function Home() {
             </p>
             <div className="overflow-hidden rounded-2xl">
               <Image
-                src={galleryHighlights[0].image}
-                alt={galleryHighlights[0].area}
+                src={
+                  galleryToRender[0]?.afterImageUrl ??
+                  "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=900&q=80"
+                }
+                alt={galleryToRender[0]?.title ?? "Featured project"}
                 width={800}
                 height={600}
                 className="h-64 w-full object-cover"
                 priority
               />
             </div>
-            <p className="text-lg font-semibold">{galleryHighlights[0].area}</p>
+            <p className="text-lg font-semibold">
+              {galleryToRender[0]?.title ?? "Modern living room"}
+            </p>
             <p className="text-sm text-muted-foreground">
-              {galleryHighlights[0].result}
+              {galleryToRender[0]?.notes?.[0] ??
+                "Removed staining and restored bright neutrals."}
             </p>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Waves className="h-4 w-4" aria-hidden="true" />
@@ -258,25 +310,31 @@ export default function Home() {
           </div>
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {services.map((service) => (
-            <Card key={service.title} className="h-full">
-              <CardHeader>
-                <service.icon className="h-10 w-10 rounded-2xl bg-primary/10 p-2 text-primary" />
-                <CardTitle>{service.title}</CardTitle>
-                <CardDescription>{service.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  {service.highlights.map((item) => (
-                    <li key={item} className="flex items-center gap-2">
-                      <Star className="h-3.5 w-3.5 text-primary" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          ))}
+          {servicesToRender.map((service) => {
+            const Icon =
+              (service.icon &&
+                iconLibrary[service.icon as keyof typeof iconLibrary]) ??
+              Sparkles;
+            return (
+              <Card key={service._id} className="h-full">
+                <CardHeader>
+                  <Icon className="h-10 w-10 rounded-2xl bg-primary/10 p-2 text-primary" />
+                  <CardTitle>{service.title}</CardTitle>
+                  <CardDescription>{service.summary}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2 text-sm text-muted-foreground">
+                    {service.highlights?.map((item) => (
+                      <li key={item} className="flex items-center gap-2">
+                        <Star className="h-3.5 w-3.5 text-primary" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       </section>
 
@@ -291,9 +349,9 @@ export default function Home() {
           </p>
         </div>
         <div className="grid gap-6 md:grid-cols-3">
-          {steps.map((step, index) => (
+          {stepsToRender.map((step, index) => (
             <div
-              key={step.title}
+              key={step._id}
               className="rounded-3xl border bg-card/70 p-6 shadow-sm"
             >
               <div className="text-sm font-semibold text-primary">
@@ -301,7 +359,7 @@ export default function Home() {
               </div>
               <p className="mt-2 text-lg font-semibold">{step.title}</p>
               <p className="mt-2 text-sm text-muted-foreground">
-                {step.detail}
+                {step.description}
               </p>
             </div>
           ))}
@@ -326,21 +384,24 @@ export default function Home() {
           </Button>
         </div>
         <div className="grid gap-6 md:grid-cols-3">
-          {galleryHighlights.map((item) => (
-            <Card key={item.id} className="overflow-hidden">
+          {galleryToRender.map((item) => (
+            <Card key={item._id} className="overflow-hidden">
               <Image
-                src={item.image}
-                alt={item.area}
+                src={
+                  item.afterImageUrl ??
+                  "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=900&q=80"
+                }
+                alt={item.title}
                 width={600}
                 height={500}
                 className="h-52 w-full object-cover"
               />
               <CardContent className="space-y-2 py-6">
                 <p className="text-sm uppercase tracking-wide text-muted-foreground">
-                  {item.area}
+                  {item.location}
                 </p>
                 <p className="text-lg font-semibold text-foreground">
-                  {item.result}
+                  {item.title}
                 </p>
               </CardContent>
             </Card>
@@ -358,14 +419,14 @@ export default function Home() {
           </p>
         </div>
         <div className="grid gap-6 md:grid-cols-2">
-          {testimonials.map((testimonial) => (
-            <Card key={testimonial.name} className="h-full bg-card/80">
+          {testimonialsToRender.map((testimonial) => (
+            <Card key={testimonial._id} className="h-full bg-card/80">
               <CardHeader>
                 <CardTitle className="text-lg font-semibold">
-                  {testimonial.service}
+                  {testimonial.serviceTitle ?? "Carpet Refresh"}
                 </CardTitle>
                 <CardDescription>
-                  {testimonial.name} · {testimonial.location}
+                  {testimonial.customerName} · {testimonial.location}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -447,17 +508,21 @@ export default function Home() {
           </Button>
         </div>
         <div className="grid gap-6 md:grid-cols-3">
-          {blogHighlights.map((post) => (
+          {postsToRender.map((post) => (
             <Card
-              key={post.title}
+              key={post._id}
               className="h-full border-dashed bg-card/70 transition hover:border-primary/50"
             >
               <CardHeader>
                 <CardTitle className="text-xl">{post.title}</CardTitle>
-                <CardDescription>{post.description}</CardDescription>
+                <CardDescription>{post.excerpt}</CardDescription>
               </CardHeader>
               <CardContent className="flex items-center justify-between text-sm text-muted-foreground">
-                <span>{post.readingTime}</span>
+                <span>
+                  {post.readingTime
+                    ? `${post.readingTime} min read`
+                    : post.category}
+                </span>
                 <Link
                   href="/blog"
                   className="inline-flex items-center gap-1 text-primary"

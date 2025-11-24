@@ -23,17 +23,15 @@ export const galleryEntry = defineType({
       to: [{ type: "service" }],
     }),
     defineField({
-      name: "beforeImage",
-      title: "Before image",
-      type: "image",
-      options: { hotspot: true },
+      name: "beforeImageUrl",
+      title: "Before image URL",
+      type: "url",
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: "afterImage",
-      title: "After image",
-      type: "image",
-      options: { hotspot: true },
+      name: "afterImageUrl",
+      title: "After image URL",
+      type: "url",
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -46,7 +44,6 @@ export const galleryEntry = defineType({
   preview: {
     select: {
       title: "title",
-      media: "afterImage",
       subtitle: "location",
     },
   },

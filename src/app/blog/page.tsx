@@ -9,61 +9,43 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { sanityClient } from "@/lib/sanity.client";
+import { blogPostsQuery } from "@/lib/sanity.queries";
 
-const posts = [
-  {
-    title: "Carpet maintenance between professional cleanings",
-    excerpt:
-      "How to spot vacuum, handle spills, and rotate cleaning routes so foot traffic never builds up.",
-    category: "Maintenance",
-    readingTime: "6 min read",
-    date: "Feb 3",
-  },
-  {
-    title: "Pet odor myths (and what actually works)",
-    excerpt:
-      "Break up with powder fresheners. These are the steps our technicians take to permanently remove odors.",
-    category: "Pet care",
-    readingTime: "8 min read",
-    date: "Jan 27",
-  },
-  {
-    title: "Steam vs. low-moisture cleaning for commercial carpets",
-    excerpt:
-      "Use this decision tree to know when encapsulation is enough or when a deeper flush is required.",
-    category: "Commercial",
-    readingTime: "7 min read",
-    date: "Jan 12",
-  },
-  {
-    title: "Guide to protecting natural fiber rugs",
-    excerpt:
-      "Wool, silk, and hand-knotted pieces deserve specific chemistry. Here are the pre-tests we run every time.",
-    category: "Textile care",
-    readingTime: "5 min read",
-    date: "Dec 30",
-  },
-  {
-    title: "Checklist before your cleaning crew arrives",
-    excerpt:
-      "Move small items, prep pets, and confirm parking or elevator access with this printable list.",
-    category: "Prep",
-    readingTime: "4 min read",
-    date: "Dec 18",
-  },
-  {
-    title: "Understanding drying times and airflow",
-    excerpt:
-      "Ceiling fans, HVAC settings, and dehumidifiers can cut dry times in half. Here’s how to set them up.",
-    category: "Maintenance",
-    readingTime: "5 min read",
-    date: "Dec 5",
-  },
-];
+type BlogPost = {
+  _id: string;
+  title: string;
+  excerpt?: string;
+  category?: string;
+  readingTime?: number;
+  publishedAt?: string;
+  slug?: { current: string };
+};
 
 const container = "mx-auto max-w-6xl px-4 sm:px-6 lg:px-8";
 
-export default function BlogPage() {
+export const revalidate = 60 * 30;
+
+async function fetchPosts() {
+  const posts = await sanityClient.fetch<BlogPost[]>(blogPostsQuery);
+  return posts.length
+    ? posts
+    : [
+        {
+          _id: "post-1",
+          title: "Carpet maintenance between professional cleanings",
+          excerpt:
+            "How to spot vacuum, handle spills, and rotate cleaning routes so foot traffic never builds up.",
+          category: "Maintenance",
+          readingTime: 6,
+          publishedAt: "2024-02-03T08:00:00Z",
+        },
+      ];
+}
+
+export default async function BlogPage() {
+  const posts = await fetchPosts();
+
   return (
     <div className="space-y-16 py-12">
       <section className={`${container} space-y-4`}>
@@ -95,17 +77,23 @@ export default function BlogPage() {
       <section className={container}>
         <div className="grid gap-8 md:grid-cols-2">
           {posts.map((post) => (
-            <Card key={post.title} className="border-border/70 bg-card/70">
+            <Card key={post._id} className="border-border/70 bg-card/70">
               <CardHeader>
                 <Badge variant="outline" className="w-fit">
-                  {post.category}
+                  {post.category ?? "Article"}
                 </Badge>
                 <CardTitle className="text-2xl">{post.title}</CardTitle>
                 <CardDescription>{post.excerpt}</CardDescription>
               </CardHeader>
               <CardContent className="flex items-center justify-between text-sm text-muted-foreground">
                 <span>
-                  {post.date} · {post.readingTime}
+                  {post.publishedAt
+                    ? new Date(post.publishedAt).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                      })
+                    : "New"}
+                  {post.readingTime ? ` · ${post.readingTime} min read` : null}
                 </span>
                 <Button asChild variant="ghost" className="gap-2 px-0">
                   <Link href="/blog">

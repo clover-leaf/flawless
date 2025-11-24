@@ -26,8 +26,8 @@ export const galleryEntriesQuery = groq`*[_type == "galleryEntry"] | order(_crea
   location,
   notes,
   "serviceTitle": service->title,
-  beforeImage,
-  afterImage
+  beforeImageUrl,
+  afterImageUrl
 }`;
 
 export const blogPostsQuery = groq`*[_type == "blogPost"] | order(publishedAt desc){
