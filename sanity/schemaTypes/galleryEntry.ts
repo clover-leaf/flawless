@@ -1,0 +1,53 @@
+import { defineField, defineType } from "sanity";
+
+export const galleryEntry = defineType({
+  name: "galleryEntry",
+  title: "Gallery Entry",
+  type: "document",
+  fields: [
+    defineField({
+      name: "title",
+      title: "Project title",
+      type: "string",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "location",
+      title: "Location",
+      type: "string",
+    }),
+    defineField({
+      name: "service",
+      title: "Service",
+      type: "reference",
+      to: [{ type: "service" }],
+    }),
+    defineField({
+      name: "beforeImage",
+      title: "Before image",
+      type: "image",
+      options: { hotspot: true },
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "afterImage",
+      title: "After image",
+      type: "image",
+      options: { hotspot: true },
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "notes",
+      title: "Detail checklist",
+      type: "array",
+      of: [{ type: "string" }],
+    }),
+  ],
+  preview: {
+    select: {
+      title: "title",
+      media: "afterImage",
+      subtitle: "location",
+    },
+  },
+});
