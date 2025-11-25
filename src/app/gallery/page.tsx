@@ -24,7 +24,7 @@ type GalleryEntry = {
 
 const container = "mx-auto max-w-6xl px-4 sm:px-6 lg:px-8";
 
-export const revalidate = 60 * 30;
+export const revalidate = 1800;
 
 async function fetchGalleryEntries() {
   const entries = await sanityClient.fetch<GalleryEntry[]>(galleryEntriesQuery);

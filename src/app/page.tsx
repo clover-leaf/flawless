@@ -101,7 +101,7 @@ const iconLibrary: Record<string, LucideIcon> = {
   leaf: Leaf,
 };
 
-export const revalidate = 60 * 30; // 30 minutes
+export const revalidate = 1800; // 30 minutes
 
 async function fetchHomeData() {
   const [hero, services, steps, testimonials, gallery, posts] =
