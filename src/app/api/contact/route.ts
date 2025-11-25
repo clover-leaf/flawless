@@ -49,7 +49,7 @@ export async function POST(request: Request) {
     `Flawless Carpet Cleaning <${fallbackSettings.email}>`;
 
   try {
-    await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: fromAddress,
       to: toEmail,
       subject: `New service inquiry from ${name}`,
@@ -63,7 +63,15 @@ export async function POST(request: Request) {
       ].join("\n"),
     });
 
-    return NextResponse.json({ success: true });
+    if (error) {
+      console.error("Resend API error", error);
+      return NextResponse.json(
+        { error: "Failed to send message. Please try again later." },
+        { status: 500 },
+      );
+    }
+
+    return NextResponse.json({ success: true, id: data?.id });
   } catch (error) {
     console.error("Failed to send contact email", error);
     return NextResponse.json(
