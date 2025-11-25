@@ -38,8 +38,12 @@ type CloudinaryUploadResult = {
   info: CloudinaryUploadInfo;
 };
 
-const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+const cloudName =
+  process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ||
+  process.env.SANITY_STUDIO_CLOUDINARY_CLOUD_NAME;
+const uploadPreset =
+  process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET ||
+  process.env.SANITY_STUDIO_CLOUDINARY_UPLOAD_PRESET;
 const defaultFolder = "flawless/gallery";
 
 export function CloudinaryImageInput(
