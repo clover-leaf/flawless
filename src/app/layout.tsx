@@ -2,12 +2,10 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import type { SocialLink } from "@/components/social-links";
 import "./globals.css";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { sanityClient } from "@/lib/sanity.client";
-import { siteSettingsQuery } from "@/lib/sanity.queries";
+import { getSiteSettings } from "@/lib/site-settings";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,79 +43,6 @@ export const metadata: Metadata = {
     type: "website",
   },
 };
-
-type SiteSettings = {
-  title: string;
-  tagline?: string;
-  phone?: string;
-  email?: string;
-  address?: string;
-  hours?: string;
-  serviceAreas?: string[];
-  showSocials?: boolean;
-  socialLinks?: SocialLink[];
-};
-
-const fallbackSettings: SiteSettings = {
-  title: "Flawless Carpet Cleaning",
-  tagline: "Family operated · Est. 2016",
-  phone: "(512) 555-0130",
-  email: "hello@flawlesscarpet.com",
-  address: "Austin & surrounding suburbs",
-  hours: "Monday–Saturday · 7a–7p",
-  serviceAreas: [
-    "Central Austin",
-    "Round Rock",
-    "Cedar Park",
-    "Westlake",
-    "Buda & Kyle",
-    "Georgetown",
-  ],
-  showSocials: true,
-  socialLinks: [
-    {
-      label: "Facebook",
-      platform: "facebook",
-      url: "https://facebook.com/flawlesscarpetcleaning",
-      enabled: true,
-    },
-    {
-      label: "Instagram",
-      platform: "instagram",
-      url: "https://instagram.com/flawlesscarpetcleaning",
-      enabled: true,
-    },
-    {
-      label: "Twitter",
-      platform: "twitter",
-      url: "https://twitter.com/flawlesscarpet",
-      enabled: true,
-    },
-  ],
-};
-
-async function getSiteSettings() {
-  try {
-    const result = await sanityClient.fetch<SiteSettings | null>(
-      siteSettingsQuery,
-    );
-    if (!result) return fallbackSettings;
-    return {
-      ...fallbackSettings,
-      ...result,
-      serviceAreas: result.serviceAreas?.length
-        ? result.serviceAreas
-        : fallbackSettings.serviceAreas,
-      socialLinks: result.socialLinks ?? fallbackSettings.socialLinks,
-      showSocials:
-        typeof result.showSocials === "boolean"
-          ? result.showSocials
-          : fallbackSettings.showSocials,
-    };
-  } catch {
-    return fallbackSettings;
-  }
-}
 
 export default async function RootLayout({
   children,

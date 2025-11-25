@@ -1,25 +1,57 @@
 "use client";
 
-import { CheckCircle2, Loader2 } from "lucide-react";
+import { CheckCircle2, Loader2, TriangleAlert } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-type FormStatus = "idle" | "submitting" | "success";
+type FormStatus = "idle" | "submitting" | "success" | "error";
 
 export function ContactForm() {
   const [status, setStatus] = useState<FormStatus>("idle");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setStatus("submitting");
+    setErrorMessage(null);
 
-    await new Promise((resolve) => setTimeout(resolve, 900));
+    const formData = new FormData(event.currentTarget);
+    const payload = {
+      name: formData.get("name"),
+      phone: formData.get("phone"),
+      email: formData.get("email"),
+      service: formData.get("service"),
+      message: formData.get("message"),
+    };
 
-    setStatus("success");
-    event.currentTarget.reset();
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => null);
+        setErrorMessage(
+          data?.error ?? "Something went wrong. Please try again.",
+        );
+        setStatus("error");
+        return;
+      }
+
+      setStatus("success");
+      event.currentTarget.reset();
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("Unable to send your request. Please try again later.");
+      setStatus("error");
+    }
   }
 
   return (
@@ -94,6 +126,12 @@ export function ContactForm() {
           "Request a call"
         )}
       </Button>
+      {status === "error" && errorMessage ? (
+        <p className="flex items-center gap-2 text-sm font-medium text-red-600">
+          <TriangleAlert className="h-4 w-4" aria-hidden="true" />
+          {errorMessage}
+        </p>
+      ) : null}
       {status === "success" && (
         <p className="flex items-center gap-2 text-sm font-medium text-emerald-600">
           <CheckCircle2 className="h-4 w-4" aria-hidden="true" />

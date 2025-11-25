@@ -44,10 +44,15 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 2. Gallery entries now include a “Cloudinary upload” field directly in Sanity Studio—click “Upload image” to open the Cloudinary widget and the public ID/secure URL are stored automatically.
 3. All Unsplash references have been removed; every fallback and metadata image now points to Cloudinary (`res.cloudinary.com/djzvgtp09`). Remember to keep that domain in `next.config.ts` if you change clouds.
 
+## Email (Resend)
+
+1. Set `RESEND_API_KEY` and `RESEND_FROM_EMAIL` in `.env.local`/Vercel. The contact form uses these to send leads to the email address configured in the `Site Settings` document.
+2. The `/api/contact` route validates submissions and sends a Resend email summarizing the request. Errors are surfaced back to the UI so users can retry if delivery fails.
+
 ## Next steps for the carpet cleaning site
 
 - **Sanity CMS**: Create a Sanity project with datasets for hero copy, services, blog posts, and gallery entries. Install `next-sanity`, generate a read token, and define simple schemas so the content studio is approachable for non-technical editors. Add the studio either as an embedded route (protected with auth) or host it separately.
 - **Cloudinary gallery**: Create a Cloudinary account, generate an upload preset, and store the credentials in `.env.local`. When defining Sanity gallery documents, persist the Cloudinary public IDs so the front end can build optimized URLs for the Next.js `<Image>` component.
-- **Resend contact form**: Add a server action or route handler (e.g., `app/api/contact/route.ts`) that validates submissions and calls Resend with your sister's inbox as the destination. Keep the API key in `.env.local` and enable [Resend domains](https://resend.com/domains) for better deliverability.
+- **Resend contact form**: Configure `RESEND_API_KEY`/`RESEND_FROM_EMAIL` and verify your domain in Resend for the best deliverability. The `/api/contact` route already sends inquiries to the email stored in the `Site Settings` document.
 - **SEO & metadata**: Configure shared metadata in `src/app/layout.tsx`, add Open Graph/Twitter cards for the home, gallery, and blog routes, and include structured data (LocalBusiness, FAQ) where appropriate.
 - **Deployment**: Connect the repo to Vercel. Configure environment variables for Sanity, Cloudinary, and Resend in the Vercel dashboard. Enable preview deployments so content and UI changes can be reviewed before going live.
