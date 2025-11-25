@@ -36,8 +36,11 @@ export function ContactForm() {
         body: JSON.stringify(payload),
       });
 
+      console.log("Response status:", response.status, response.ok);
+
       if (!response.ok) {
         const data = await response.json().catch(() => null);
+        console.log("Error response data:", data);
         setErrorMessage(
           data?.error ?? "Something went wrong. Please try again.",
         );
@@ -45,10 +48,13 @@ export function ContactForm() {
         return;
       }
 
+      const data = await response.json();
+      console.log("Success response data:", data);
+
       setStatus("success");
       event.currentTarget.reset();
     } catch (error) {
-      console.error(error);
+      console.error("Fetch error:", error);
       setErrorMessage("Unable to send your request. Please try again later.");
       setStatus("error");
     }
