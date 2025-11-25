@@ -83,6 +83,15 @@ export function CloudinaryImageInput(
       (error, result) => {
         if (!error && result?.event === "success") {
           const info = result.info;
+          const aspectRatio = info.width / info.height;
+          const ratioOk =
+            aspectRatio >= 1.3 && aspectRatio <= 1.4 && info.width >= 1000;
+          if (!ratioOk) {
+            const proceed = window.confirm(
+              "This image is not near the recommended 3:2 or 4:3 ratio (~1200x800). Are you sure you want to use it?",
+            );
+            if (!proceed) return;
+          }
           onChange(
             set({
               _type: "cloudinary.asset",
@@ -115,6 +124,16 @@ export function CloudinaryImageInput(
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+      <p
+        style={{
+          fontSize: "0.85rem",
+          color: "var(--card-muted-fg, #555)",
+          lineHeight: 1.4,
+        }}
+      >
+        Recommended: landscape photos around 1200×800 (3:2 or 4:3) with matching
+        dimensions for before/after shots.
+      </p>
       <div style={{ display: "flex", gap: "0.5rem" }}>
         <button
           type="button"
@@ -123,8 +142,10 @@ export function CloudinaryImageInput(
           style={{
             padding: "0.35rem 0.75rem",
             borderRadius: "999px",
-            border: "1px solid var(--card-border, #ddd)",
-            background: canUpload ? "var(--card-bg, #f5f5f5)" : "#e5e5e5",
+            border: "1px solid #2563eb",
+            background: canUpload ? "#2563eb" : "#93c5fd",
+            color: "#fff",
+            fontWeight: 600,
             cursor: canUpload ? "pointer" : "not-allowed",
           }}
         >
