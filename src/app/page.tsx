@@ -312,8 +312,8 @@ export default async function Home() {
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {servicesToRender.map((service) => {
-            const Icon: LucideIcon =
-              (service.icon && iconLibrary[service.icon]) ?? Sparkles;
+            const iconKey = service.icon as keyof typeof iconLibrary;
+            const Icon = iconLibrary[iconKey] ?? Sparkles;
             return (
               <Card key={service._id} className="h-full">
                 <CardHeader>
