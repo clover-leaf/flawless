@@ -56,6 +56,10 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   try {
     const result = await sanityClient.fetch<SiteSettings | null>(
       siteSettingsQuery,
+      {},
+      {
+        next: { revalidate: 0 },
+      },
     );
     if (!result) return fallbackSettings;
     return {
