@@ -20,10 +20,15 @@ export async function POST(request: NextRequest) {
       docType === "service" ||
       docType === "homeHero" ||
       docType === "processStep" ||
-      docType === "testimonial"
+      docType === "testimonial" ||
+      docType === "siteSettings"
     ) {
       for (const path of pathsToRevalidate) {
         revalidatePath(path);
+      }
+      // Also revalidate root layout for siteSettings changes (header/footer)
+      if (docType === "siteSettings") {
+        revalidatePath("/", "layout");
       }
     }
 

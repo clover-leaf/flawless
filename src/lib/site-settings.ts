@@ -58,7 +58,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
       siteSettingsQuery,
       {},
       {
-        next: { revalidate: 0 },
+        next: { revalidate: 1800 }, // Cache for 30 minutes, webhook will revalidate on changes
       },
     );
     if (!result) return fallbackSettings;
