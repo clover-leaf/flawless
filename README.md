@@ -36,6 +36,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 3. Use the provided document types (`Homepage Hero`, `Service`, `Process Step`, `Testimonial`, `Gallery Entry`, `Blog Post`) to manage all dynamic copy and assets. Before/after images should be uploaded here—or reference Cloudinary URLs when you’re ready—and tied to gallery entries.
 4. Wire the GROQ queries in `src/lib/sanity.queries.ts` into your pages (home, gallery, blog) to replace the current placeholder arrays. Import the `sanityClient` from `src/lib/sanity.client.ts` inside server components to fetch data.
 5. Configure a webhook in Sanity (project settings → API → Webhooks) that hits `/api/revalidate?secret=SANITY_REVALIDATE_SECRET` once you implement that route in Next.js. This will keep ISR pages fresh whenever content changes.
+6. The `/api/revalidate` route expects a `POST` with `secret=SANITY_REVALIDATE_SECRET`. Point your Sanity webhook to `https://<your-domain>/api/revalidate?secret=...` and send the default payload; the site will immediately revalidate `/`, `/gallery`, and `/blog` after each publish.
 
 ## Media (Cloudinary)
 
