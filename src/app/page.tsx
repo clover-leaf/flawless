@@ -51,12 +51,19 @@ type SanityTestimonial = {
   serviceTitle?: string;
 };
 
+type CloudinaryAsset = {
+  secureUrl?: string;
+  publicId?: string;
+  width?: number;
+  height?: number;
+};
+
 type SanityGalleryEntry = {
   _id: string;
   title: string;
   location?: string;
-  beforeImageUrl?: string;
-  afterImageUrl?: string;
+  beforeImage?: CloudinaryAsset;
+  afterImage?: CloudinaryAsset;
   notes?: string[];
 };
 
@@ -177,8 +184,10 @@ export default async function Home() {
           _id: "gallery-1",
           title: "Modern living room",
           location: "Austin",
-          afterImageUrl:
-            "https://res.cloudinary.com/djzvgtp09/image/upload/v1764061913/flawless/gallery/pzmumvwfwznja8kuf1m4.jpg",
+          afterImage: {
+            secureUrl:
+              "https://res.cloudinary.com/djzvgtp09/image/upload/v1764061913/flawless/gallery/pzmumvwfwznja8kuf1m4.jpg",
+          },
           notes: ["Removed staining and restored bright neutrals."],
         },
       ];
@@ -256,7 +265,7 @@ export default async function Home() {
             <div className="overflow-hidden rounded-2xl">
               <Image
                 src={
-                  galleryToRender[0]?.afterImageUrl ??
+                  galleryToRender[0]?.afterImage?.secureUrl ??
                   "https://res.cloudinary.com/djzvgtp09/image/upload/v1764061913/flawless/gallery/pzmumvwfwznja8kuf1m4.jpg"
                 }
                 alt={galleryToRender[0]?.title ?? "Featured project"}
@@ -387,7 +396,7 @@ export default async function Home() {
             <Card key={item._id} className="overflow-hidden">
               <Image
                 src={
-                  item.afterImageUrl ??
+                  item.afterImage?.secureUrl ??
                   "https://res.cloudinary.com/djzvgtp09/image/upload/v1764061913/flawless/gallery/pzmumvwfwznja8kuf1m4.jpg"
                 }
                 alt={item.title}

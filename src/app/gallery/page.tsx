@@ -12,13 +12,20 @@ import {
 import { sanityClient } from "@/lib/sanity.client";
 import { galleryEntriesQuery } from "@/lib/sanity.queries";
 
+type CloudinaryAsset = {
+  secureUrl?: string;
+  publicId?: string;
+  width?: number;
+  height?: number;
+};
+
 type GalleryEntry = {
   _id: string;
   title: string;
   location?: string;
   serviceTitle?: string;
-  beforeImageUrl?: string;
-  afterImageUrl?: string;
+  beforeImage?: CloudinaryAsset;
+  afterImage?: CloudinaryAsset;
   notes?: string[];
 };
 
@@ -36,10 +43,14 @@ async function fetchGalleryEntries() {
           title: "Townhome living room",
           location: "Austin",
           serviceTitle: "Steam cleaning",
-          beforeImageUrl:
-            "https://res.cloudinary.com/djzvgtp09/image/upload/v1764061921/flawless/gallery/hetey7iiam6goox1a1vn.jpg",
-          afterImageUrl:
-            "https://res.cloudinary.com/djzvgtp09/image/upload/v1764061913/flawless/gallery/pzmumvwfwznja8kuf1m4.jpg",
+          beforeImage: {
+            secureUrl:
+              "https://res.cloudinary.com/djzvgtp09/image/upload/v1764061921/flawless/gallery/hetey7iiam6goox1a1vn.jpg",
+          },
+          afterImage: {
+            secureUrl:
+              "https://res.cloudinary.com/djzvgtp09/image/upload/v1764061913/flawless/gallery/pzmumvwfwznja8kuf1m4.jpg",
+          },
           notes: ["Removed traffic lane soil", "Applied fiber guard"],
         },
       ];
@@ -71,11 +82,11 @@ export default async function GalleryPage() {
             <Card key={entry._id} className="overflow-hidden border-border/70">
               <BeforeAfterSlider
                 beforeSrc={
-                  entry.beforeImageUrl ??
+                  entry.beforeImage?.secureUrl ??
                   "https://res.cloudinary.com/djzvgtp09/image/upload/v1764061921/flawless/gallery/hetey7iiam6goox1a1vn.jpg"
                 }
                 afterSrc={
-                  entry.afterImageUrl ??
+                  entry.afterImage?.secureUrl ??
                   "https://res.cloudinary.com/djzvgtp09/image/upload/v1764061913/flawless/gallery/pzmumvwfwznja8kuf1m4.jpg"
                 }
                 alt={entry.title}

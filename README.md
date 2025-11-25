@@ -41,7 +41,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 ## Media (Cloudinary)
 
 1. Create unsigned upload preset(s) in Cloudinary (this project uses `flawless` inside the `djzvgtp09` cloud). Add the following environment variables for both local dev and Vercel: `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`, `NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`.
-2. Gallery entries in Sanity currently store Cloudinary URLs for before/after shots. Use the Studio (or the Cloudinary Media Library) to upload new images, then paste the secure URL into the gallery entry.
+2. Gallery entries now include a “Cloudinary upload” field directly in Sanity Studio—click “Upload image” to open the Cloudinary widget and the public ID/secure URL are stored automatically.
 3. All Unsplash references have been removed; every fallback and metadata image now points to Cloudinary (`res.cloudinary.com/djzvgtp09`). Remember to keep that domain in `next.config.ts` if you change clouds.
 
 ## Next steps for the carpet cleaning site

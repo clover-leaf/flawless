@@ -23,15 +23,15 @@ export const galleryEntry = defineType({
       to: [{ type: "service" }],
     }),
     defineField({
-      name: "beforeImageUrl",
-      title: "Before image URL",
-      type: "url",
+      name: "beforeImage",
+      title: "Before image",
+      type: "cloudinary.asset",
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: "afterImageUrl",
-      title: "After image URL",
-      type: "url",
+      name: "afterImage",
+      title: "After image",
+      type: "cloudinary.asset",
       validation: (rule) => rule.required(),
     }),
     defineField({
