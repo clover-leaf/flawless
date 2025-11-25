@@ -53,7 +53,7 @@ export async function POST(request: Request) {
       from: fromAddress,
       to: toEmail,
       subject: `New service inquiry from ${name}`,
-      reply_to: email,
+      replyTo: email,
       text: [
         `Name: ${name}`,
         `Email: ${email}`,
