@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     siteName: "Flawless Carpet Cleaning",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1489515217757-5fd1be406fef",
+        url: "https://res.cloudinary.com/djzvgtp09/image/upload/v1764061940/flawless/gallery/j6ppscfrxrwh68hrdq4h.jpg",
         width: 1200,
         height: 630,
         alt: "Technician cleaning carpet with modern equipment",

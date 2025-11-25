@@ -178,7 +178,7 @@ export default async function Home() {
           title: "Modern living room",
           location: "Austin",
           afterImageUrl:
-            "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=900&q=80",
+            "https://res.cloudinary.com/djzvgtp09/image/upload/v1764061913/flawless/gallery/pzmumvwfwznja8kuf1m4.jpg",
           notes: ["Removed staining and restored bright neutrals."],
         },
       ];
@@ -257,7 +257,7 @@ export default async function Home() {
               <Image
                 src={
                   galleryToRender[0]?.afterImageUrl ??
-                  "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=900&q=80"
+                  "https://res.cloudinary.com/djzvgtp09/image/upload/v1764061913/flawless/gallery/pzmumvwfwznja8kuf1m4.jpg"
                 }
                 alt={galleryToRender[0]?.title ?? "Featured project"}
                 width={800}
@@ -388,7 +388,7 @@ export default async function Home() {
               <Image
                 src={
                   item.afterImageUrl ??
-                  "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=900&q=80"
+                  "https://res.cloudinary.com/djzvgtp09/image/upload/v1764061913/flawless/gallery/pzmumvwfwznja8kuf1m4.jpg"
                 }
                 alt={item.title}
                 width={600}

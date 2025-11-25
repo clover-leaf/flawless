@@ -37,6 +37,12 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 4. Wire the GROQ queries in `src/lib/sanity.queries.ts` into your pages (home, gallery, blog) to replace the current placeholder arrays. Import the `sanityClient` from `src/lib/sanity.client.ts` inside server components to fetch data.
 5. Configure a webhook in Sanity (project settings → API → Webhooks) that hits `/api/revalidate?secret=SANITY_REVALIDATE_SECRET` once you implement that route in Next.js. This will keep ISR pages fresh whenever content changes.
 
+## Media (Cloudinary)
+
+1. Create unsigned upload preset(s) in Cloudinary (this project uses `flawless` inside the `djzvgtp09` cloud). Add the following environment variables for both local dev and Vercel: `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`, `NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`.
+2. Gallery entries in Sanity currently store Cloudinary URLs for before/after shots. Use the Studio (or the Cloudinary Media Library) to upload new images, then paste the secure URL into the gallery entry.
+3. All Unsplash references have been removed; every fallback and metadata image now points to Cloudinary (`res.cloudinary.com/djzvgtp09`). Remember to keep that domain in `next.config.ts` if you change clouds.
+
 ## Next steps for the carpet cleaning site
 
 - **Sanity CMS**: Create a Sanity project with datasets for hero copy, services, blog posts, and gallery entries. Install `next-sanity`, generate a read token, and define simple schemas so the content studio is approachable for non-technical editors. Add the studio either as an embedded route (protected with auth) or host it separately.

@@ -37,9 +37,9 @@ async function fetchGalleryEntries() {
           location: "Austin",
           serviceTitle: "Steam cleaning",
           beforeImageUrl:
-            "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=900&q=80",
+            "https://res.cloudinary.com/djzvgtp09/image/upload/v1764061921/flawless/gallery/hetey7iiam6goox1a1vn.jpg",
           afterImageUrl:
-            "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=900&q=80",
+            "https://res.cloudinary.com/djzvgtp09/image/upload/v1764061913/flawless/gallery/pzmumvwfwznja8kuf1m4.jpg",
           notes: ["Removed traffic lane soil", "Applied fiber guard"],
         },
       ];
@@ -72,11 +72,11 @@ export default async function GalleryPage() {
               <BeforeAfterSlider
                 beforeSrc={
                   entry.beforeImageUrl ??
-                  "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=900&q=80"
+                  "https://res.cloudinary.com/djzvgtp09/image/upload/v1764061921/flawless/gallery/hetey7iiam6goox1a1vn.jpg"
                 }
                 afterSrc={
                   entry.afterImageUrl ??
-                  "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=900&q=80"
+                  "https://res.cloudinary.com/djzvgtp09/image/upload/v1764061913/flawless/gallery/pzmumvwfwznja8kuf1m4.jpg"
                 }
                 alt={entry.title}
               />
