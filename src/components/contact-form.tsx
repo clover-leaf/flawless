@@ -18,7 +18,9 @@ export function ContactForm() {
     setStatus("submitting");
     setErrorMessage(null);
 
-    const formData = new FormData(event.currentTarget);
+    // Store form reference before async operations (React recycles event objects)
+    const form = event.currentTarget;
+    const formData = new FormData(form);
     const payload = {
       name: formData.get("name"),
       phone: formData.get("phone"),
@@ -52,7 +54,7 @@ export function ContactForm() {
       console.log("Success response data:", data);
 
       setStatus("success");
-      event.currentTarget.reset();
+      form.reset();
     } catch (error) {
       console.error("Fetch error:", error);
       setErrorMessage("Unable to send your request. Please try again later.");
