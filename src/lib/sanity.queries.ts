@@ -50,3 +50,20 @@ export const blogPostsQuery = groq`*[_type == "blogPost"] | order(publishedAt de
   publishedAt,
   featuredImage
 }`;
+
+export const siteSettingsQuery = groq`*[_type == "siteSettings"][0]{
+  title,
+  tagline,
+  phone,
+  email,
+  address,
+  hours,
+  serviceAreas,
+  showSocials,
+  socialLinks[]{
+    label,
+    platform,
+    url,
+    enabled
+  }
+}`;

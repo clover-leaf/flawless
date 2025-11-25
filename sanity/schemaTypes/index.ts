@@ -4,6 +4,7 @@ import { galleryEntry } from "./galleryEntry";
 import { homeHero } from "./homeHero";
 import { processStep } from "./processStep";
 import { service } from "./service";
+import { siteSettings } from "./siteSettings";
 import { testimonial } from "./testimonial";
 
 export const schemaTypes = [
@@ -14,4 +15,5 @@ export const schemaTypes = [
   testimonial,
   galleryEntry,
   blogPost,
+  siteSettings,
 ];

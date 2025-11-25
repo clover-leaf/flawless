@@ -33,8 +33,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 1. Copy `.env.example` to `.env.local` (already created with your project values) and confirm the `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`, `SANITY_API_VERSION`, `SANITY_READ_TOKEN`, and `SANITY_REVALIDATE_SECRET` variables match your Sanity project (`l1riut3x`).
 2. Seed content in Sanity Studio by running `pnpm studio` and navigating to [http://localhost:3333](http://localhost:3333) or open the embedded studio at [http://localhost:2612/studio](http://localhost:2612/studio) while the Next.js dev server runs.
-3. Use the provided document types (`Homepage Hero`, `Service`, `Process Step`, `Testimonial`, `Gallery Entry`, `Blog Post`) to manage all dynamic copy and assets. Before/after images should be uploaded here—or reference Cloudinary URLs when you’re ready—and tied to gallery entries.
-4. Wire the GROQ queries in `src/lib/sanity.queries.ts` into your pages (home, gallery, blog) to replace the current placeholder arrays. Import the `sanityClient` from `src/lib/sanity.client.ts` inside server components to fetch data.
+3. Use the provided document types (`Homepage Hero`, `Service`, `Process Step`, `Testimonial`, `Gallery Entry`, `Blog Post`, `Site Settings`) to manage copy, gallery assets, and business details. The custom Cloudinary uploader inside gallery entries handles before/after photos directly from Studio.
+4. Update the `Site Settings` singleton whenever the phone number, email, address, hours, or social links change. Header/footer content (including whether social icons should display) pulls from this document automatically.
 5. Configure a webhook in Sanity (project settings → API → Webhooks) that hits `/api/revalidate?secret=SANITY_REVALIDATE_SECRET` once you implement that route in Next.js. This will keep ISR pages fresh whenever content changes.
 6. The `/api/revalidate` route expects a `POST` with `secret=SANITY_REVALIDATE_SECRET`. Point your Sanity webhook to `https://<your-domain>/api/revalidate?secret=...` and send the default payload; the site will immediately revalidate `/`, `/gallery`, and `/blog` after each publish.
 
