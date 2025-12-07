@@ -86,7 +86,7 @@ export function ContactForm() {
               <Input
                 id="phone"
                 name="phone"
-                placeholder="(512) 555-0130"
+                placeholder="0490 748 529"
                 required
                 autoComplete="tel"
                 inputMode="tel"

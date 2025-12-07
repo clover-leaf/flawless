@@ -27,8 +27,8 @@ export function SiteHeader({
   socialLinks,
   showSocials = true,
 }: SiteHeaderProps) {
-  const phoneDisplay = phone ?? "(512) 555-0130";
-  const telHref = `tel:${(phone ?? "(512)555-0130").replace(/\D/g, "")}`;
+  const phoneDisplay = phone ?? "0490 748 529";
+  const telHref = `tel:${(phone ?? "0490 748 529").replace(/\D/g, "")}`;
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-background/90 backdrop-blur supports-[backdrop-filter]:backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">

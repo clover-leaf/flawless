@@ -57,7 +57,7 @@ export function SiteFooter({
                 <a href={`mailto:${email}`}>{email}</a>
               ) : (
                 <a href="mailto:hello@flawlesscarpet.com">
-                  hello@flawlesscarpet.com
+                  flawlesscarpetcleaning@gmail.com
                 </a>
               )}
             </div>

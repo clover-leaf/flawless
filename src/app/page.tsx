@@ -28,6 +28,7 @@ import {
   servicesQuery,
   testimonialsQuery,
 } from "@/lib/sanity.queries";
+import { getSiteSettings } from "@/lib/site-settings";
 
 type SanityService = {
   _id: string;
@@ -140,6 +141,11 @@ export default async function Home() {
   };
 
   const heroBadge = heroContent.serviceAreas?.join(" · ");
+  const settings = await getSiteSettings();
+  const coverageText = settings.serviceAreas?.length
+    ? settings.serviceAreas.join(" · ")
+    : "Austin metro + suburbs";
+  const hoursText = settings.hours ?? "Mon–Sat · First routes @ 8:00a";
 
   const servicesToRender = services?.length
     ? services
@@ -459,8 +465,10 @@ export default async function Home() {
           <p className="text-muted-foreground">
             Share a few details and we&apos;ll confirm your time within one
             business day. Prefer to talk? Call or text{" "}
-            <a className="font-medium text-foreground" href="tel:15125550130">
-              (512) 555-0130
+            <a className="font-medium text-foreground" 
+              href={`tel:${settings.phone?.replace(/\D/g, "")}`}
+            >
+              {settings.phone}
             </a>
             .
           </p>
@@ -469,15 +477,13 @@ export default async function Home() {
               <p className="text-sm uppercase tracking-wide text-muted-foreground">
                 Coverage
               </p>
-              <p className="text-lg font-semibold">Austin metro + suburbs</p>
+              <p className="text-lg font-semibold">{coverageText}</p>
             </div>
             <div className="rounded-3xl border bg-card/60 p-5">
               <p className="text-sm uppercase tracking-wide text-muted-foreground">
                 Hours
               </p>
-              <p className="text-lg font-semibold">
-                Mon–Sat · First routes @ 8:00a
-              </p>
+              <p className="text-lg font-semibold">{hoursText}</p>
             </div>
           </div>
         </div>

@@ -17,7 +17,7 @@ export type SiteSettings = {
 export const fallbackSettings: SiteSettings = {
   title: "Flawless Carpet Cleaning",
   tagline: "Family operated · Est. 2016",
-  phone: "(512) 555-0130",
+  phone: "0490 748 529",
   email: "hello@flawlesscarpet.com",
   address: "Austin & surrounding suburbs",
   hours: "Monday–Saturday · 7a–7p",
