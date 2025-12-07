@@ -77,31 +77,6 @@ type SanityBlogPost = {
   slug?: { current: string };
 };
 
-const stats = [
-  { label: "Homes refreshed", value: "2,400+" },
-  { label: "Average rating", value: "4.9 / 5" },
-  { label: "Dry time", value: "In 4 hours" },
-  { label: "Eco-safe products", value: "100%" },
-];
-
-const faqs = [
-  {
-    question: "How soon can you schedule service?",
-    answer:
-      "Most appointments are available within 2–3 business days. Emergency pet treatments often open up same-day slots.",
-  },
-  {
-    question: "Do you move furniture?",
-    answer:
-      "We carefully move light pieces like chairs, nightstands, and end tables, then place protective tabs underneath. Large items can be cleaned around on request.",
-  },
-  {
-    question: "Is everything safe for kids and pets?",
-    answer:
-      "Yes. We stock plant-based solutions, rinse to neutral pH, and leave a post-cleaning card detailing what was used in each room.",
-  },
-];
-
 const container = "mx-auto max-w-6xl px-4 sm:px-6 lg:px-8";
 const iconLibrary: Record<string, LucideIcon> = {
   sparkles: Sparkles,
@@ -141,12 +116,6 @@ export default async function Home() {
   };
 
   const heroBadge = heroContent.serviceAreas?.join(" · ");
-  const settings = await getSiteSettings();
-  const coverageText = settings.serviceAreas?.length
-    ? settings.serviceAreas.join(" · ")
-    : "Austin metro + suburbs";
-  const hoursText = settings.hours ?? "Mon–Sat · First routes @ 8:00a";
-
   const servicesToRender = services?.length
     ? services
     : [
@@ -157,16 +126,6 @@ export default async function Home() {
             "Deep extraction cleaning with pH-balanced rinse for living rooms, bedrooms, and hallways.",
           highlights: ["Traffic lane removal", "Fabric protectant", "Fast dry"],
           icon: "sparkles",
-        },
-      ];
-
-  const stepsToRender = steps?.length
-    ? steps
-    : [
-        {
-          _id: "step-1",
-          title: "Request a quote",
-          description: "Share square footage, fiber type, and any pet notes.",
         },
       ];
 
@@ -195,19 +154,6 @@ export default async function Home() {
               "https://res.cloudinary.com/djzvgtp09/image/upload/v1764061913/flawless/gallery/pzmumvwfwznja8kuf1m4.jpg",
           },
           notes: ["Removed staining and restored bright neutrals."],
-        },
-      ];
-
-  const postsToRender = posts?.length
-    ? posts.slice(0, 3)
-    : [
-        {
-          _id: "post-1",
-          title: "How to prep your carpets before the crew arrives",
-          excerpt:
-            "A 15-minute checklist to help us clean faster and protect your belongings.",
-          category: "Maintenance",
-          readingTime: 5,
         },
       ];
 
@@ -252,59 +198,8 @@ export default async function Home() {
               </Link>
             </Button>
           </div>
-          <div className="grid gap-4 text-sm text-muted-foreground sm:grid-cols-2">
-            <div className="rounded-2xl border border-dashed bg-card/50 p-4">
-              <p className="font-medium text-foreground">Same-week routes</p>
-              <p>Morning + afternoon arrivals, Saturday slots by request.</p>
-            </div>
-            <div className="rounded-2xl border border-dashed bg-card/50 p-4">
-              <p className="font-medium text-foreground">Photo recap</p>
-              <p>Receive before/after documentation in your inbox.</p>
-            </div>
-          </div>
         </div>
-        <div className="rounded-3xl border bg-card/70 p-6 shadow-lg shadow-primary/10">
-          <div className="space-y-4">
-            <p className="text-sm font-semibold uppercase text-muted-foreground">
-              Featured project
-            </p>
-            <div className="overflow-hidden rounded-2xl">
-              <Image
-                src={
-                  galleryToRender[0]?.afterImage?.secureUrl ??
-                  "https://res.cloudinary.com/djzvgtp09/image/upload/v1764061913/flawless/gallery/pzmumvwfwznja8kuf1m4.jpg"
-                }
-                alt={galleryToRender[0]?.title ?? "Featured project"}
-                width={800}
-                height={600}
-                className="h-64 w-full object-cover"
-                priority
-              />
-            </div>
-            <p className="text-lg font-semibold">
-              {galleryToRender[0]?.title ?? "Modern living room"}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              {galleryToRender[0]?.notes?.[0] ??
-                "Removed staining and restored bright neutrals."}
-            </p>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Waves className="h-4 w-4" aria-hidden="true" />
-              Hot-water extraction · Fiber protectant · HEPA air scrub
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className={container} aria-label="Service metrics">
-        <div className="grid gap-4 rounded-3xl border bg-card/70 p-6 sm:grid-cols-2 lg:grid-cols-4">
-          {stats.map((stat) => (
-            <div key={stat.label} className="space-y-1">
-              <p className="text-3xl font-semibold">{stat.value}</p>
-              <p className="text-sm text-muted-foreground">{stat.label}</p>
-            </div>
-          ))}
-        </div>
+        <ContactForm/>
       </section>
 
       <section className={container} aria-labelledby="services-heading">
@@ -317,7 +212,7 @@ export default async function Home() {
           </div>
           <div className="space-y-3">
             <h2 id="services-heading" className="text-3xl font-semibold">
-              Elevated cleaning plans built for busy Austin households.
+              Elevated cleaning plans built for busy Gold Coast households.
             </h2>
             <p className="text-muted-foreground">
               Choose a one-time refresh or join our maintenance schedule for
@@ -349,34 +244,6 @@ export default async function Home() {
               </Card>
             );
           })}
-        </div>
-      </section>
-
-      <section className={container} aria-labelledby="process-heading">
-        <div className="mb-8 flex flex-col gap-3">
-          <h2 id="process-heading" className="text-3xl font-semibold">
-            A spotless process from booking to post-cleaning care.
-          </h2>
-          <p className="text-muted-foreground">
-            Transparent communication, uniformed crews, and everything measured
-            twice so your home feels new again.
-          </p>
-        </div>
-        <div className="grid gap-6 md:grid-cols-3">
-          {stepsToRender.map((step, index) => (
-            <div
-              key={step._id}
-              className="rounded-3xl border bg-card/70 p-6 shadow-sm"
-            >
-              <div className="text-sm font-semibold text-primary">
-                Step {String(index + 1).padStart(2, "0")}
-              </div>
-              <p className="mt-2 text-lg font-semibold">{step.title}</p>
-              <p className="mt-2 text-sm text-muted-foreground">
-                {step.description}
-              </p>
-            </div>
-          ))}
         </div>
       </section>
 
@@ -426,7 +293,7 @@ export default async function Home() {
       <section className={container} aria-labelledby="testimonials-heading">
         <div className="mb-8">
           <h2 id="testimonials-heading" className="text-3xl font-semibold">
-            Trusted by Austin homeowners.
+            Trusted by Gold Coast homeowners.
           </h2>
           <p className="text-muted-foreground">
             See why locals keep our number pinned on the fridge.
@@ -447,103 +314,6 @@ export default async function Home() {
                 <p className="text-base text-muted-foreground">
                   “{testimonial.quote}”
                 </p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      <section
-        id="contact"
-        className={`${container} grid gap-10 lg:grid-cols-[1.1fr_0.9fr]`}
-        aria-labelledby="contact-heading"
-      >
-        <div className="space-y-4">
-          <h2 id="contact-heading" className="text-3xl font-semibold">
-            Let&apos;s restore your carpets, rugs, and upholstery.
-          </h2>
-          <p className="text-muted-foreground">
-            Share a few details and we&apos;ll confirm your time within one
-            business day. Prefer to talk? Call or text{" "}
-            <a
-              className="font-medium text-foreground"
-              href={`tel:${settings.phone?.replace(/\D/g, "")}`}
-            >
-              {settings.phone}
-            </a>
-            .
-          </p>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="rounded-3xl border bg-card/60 p-5">
-              <p className="text-sm uppercase tracking-wide text-muted-foreground">
-                Coverage
-              </p>
-              <p className="text-lg font-semibold">{coverageText}</p>
-            </div>
-            <div className="rounded-3xl border bg-card/60 p-5">
-              <p className="text-sm uppercase tracking-wide text-muted-foreground">
-                Hours
-              </p>
-              <p className="text-lg font-semibold">{hoursText}</p>
-            </div>
-          </div>
-        </div>
-        <div>
-          <ContactForm />
-          <div className="mt-6 space-y-4 rounded-3xl border bg-muted/50 p-5 text-sm text-muted-foreground">
-            {faqs.map((faq) => (
-              <details key={faq.question} className="group">
-                <summary className="cursor-pointer list-none font-medium text-foreground">
-                  {faq.question}
-                </summary>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {faq.answer}
-                </p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className={container} aria-labelledby="blog-heading">
-        <div className="mb-8 flex items-center justify-between gap-4">
-          <div>
-            <h2 id="blog-heading" className="text-3xl font-semibold">
-              Latest tips from the van
-            </h2>
-            <p className="text-muted-foreground">
-              Short reads from our technicians to keep your floors looking new.
-            </p>
-          </div>
-          <Button asChild variant="ghost" className="hidden md:flex">
-            <Link href="/blog" className="gap-2">
-              Browse blog
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
-          </Button>
-        </div>
-        <div className="grid gap-6 md:grid-cols-3">
-          {postsToRender.map((post) => (
-            <Card
-              key={post._id}
-              className="h-full border-dashed bg-card/70 transition hover:border-primary/50"
-            >
-              <CardHeader>
-                <CardTitle className="text-xl">{post.title}</CardTitle>
-                <CardDescription>{post.excerpt}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex items-center justify-between text-sm text-muted-foreground">
-                <span>
-                  {post.readingTime
-                    ? `${post.readingTime} min read`
-                    : post.category}
-                </span>
-                <Link
-                  href="/blog"
-                  className="inline-flex items-center gap-1 text-primary"
-                >
-                  Read post <ArrowRight className="h-4 w-4" />
-                </Link>
               </CardContent>
             </Card>
           ))}
