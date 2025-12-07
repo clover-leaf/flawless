@@ -147,7 +147,10 @@ export function ContactForm() {
       {status === "success" && (
         <div className="animate-in slide-in-from-bottom-4 fade-in duration-500 rounded-2xl bg-gradient-to-r from-emerald-50 to-green-50 p-8 text-center shadow-lg border-2 border-emerald-200">
           <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-emerald-100 shadow-inner">
-            <CheckCircle2 className="h-12 w-12 text-emerald-600 animate-in zoom-in duration-300 delay-75" aria-hidden="true" />
+            <CheckCircle2
+              className="h-12 w-12 text-emerald-600 animate-in zoom-in duration-300 delay-75"
+              aria-hidden="true"
+            />
           </div>
           <h3 className="text-2xl font-bold text-emerald-900 mb-3 animate-in fade-in duration-500 delay-150">
             Request received! 🎉

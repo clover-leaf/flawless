@@ -465,7 +465,8 @@ export default async function Home() {
           <p className="text-muted-foreground">
             Share a few details and we&apos;ll confirm your time within one
             business day. Prefer to talk? Call or text{" "}
-            <a className="font-medium text-foreground" 
+            <a
+              className="font-medium text-foreground"
               href={`tel:${settings.phone?.replace(/\D/g, "")}`}
             >
               {settings.phone}
