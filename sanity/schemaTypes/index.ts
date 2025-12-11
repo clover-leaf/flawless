@@ -1,6 +1,7 @@
 import { blogPost } from "./blogPost";
 import { cloudinaryAsset } from "./cloudinaryAsset";
 import { galleryEntry } from "./galleryEntry";
+import { googleReview } from "./googleReview";
 import { homeHero } from "./homeHero";
 import { processStep } from "./processStep";
 import { service } from "./service";
@@ -13,6 +14,7 @@ export const schemaTypes = [
   service,
   processStep,
   testimonial,
+  googleReview,
   galleryEntry,
   blogPost,
   siteSettings,

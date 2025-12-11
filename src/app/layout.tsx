@@ -20,13 +20,13 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://flawlesscarpetcleaning.com"),
   title: {
-    default: "Flawless Carpet Cleaning | Modern Carpet Care in Austin",
+    default: "Flawless Carpet Cleaning | Modern Carpet Care in Gold Coast",
     template: "%s | Flawless Carpet Cleaning",
   },
   description:
-    "Flawless Carpet Cleaning delivers eco-friendly carpet, rug, and upholstery cleaning across Austin with same-week appointments and gallery-proof results.",
+    "Flawless Carpet Cleaning delivers eco-friendly carpet, rug, and upholstery cleaning across Gold Coast with same-week appointments and gallery-proof results.",
   openGraph: {
-    title: "Flawless Carpet Cleaning | Modern Carpet Care in Austin",
+    title: "Flawless Carpet Cleaning | Modern Carpet Care in Gold Coast",
     description:
       "Premium carpet and upholstery cleaning powered by modern equipment, protective treatments, and photo-documented results.",
     url: "https://flawlesscarpetcleaning.com",

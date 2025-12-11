@@ -41,7 +41,7 @@ async function fetchGalleryEntries() {
         {
           _id: "gallery-1",
           title: "Townhome living room",
-          location: "Austin",
+          location: "Gold Coast",
           serviceTitle: "Steam cleaning",
           beforeImage: {
             secureUrl:

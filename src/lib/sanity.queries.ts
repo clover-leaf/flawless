@@ -67,3 +67,13 @@ export const siteSettingsQuery = groq`*[_type == "siteSettings"][0]{
     enabled
   }
 }`;
+
+export const googleReviewsQuery = groq`*[_type == "googleReview"] | order(order asc) {
+  _id,
+  reviewerName,
+  rating,
+  reviewText,
+  reviewDate,
+  profileImage,
+  order
+}`;

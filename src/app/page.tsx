@@ -10,6 +10,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { ContactForm } from "@/components/contact-form";
+import { GoogleReviews } from "@/components/google-reviews";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -201,6 +202,10 @@ export default async function Home() {
         </div>
         <ContactForm/>
       </section>
+
+      <div className={container}>
+        <GoogleReviews />
+      </div>
 
       <section className={container} aria-labelledby="services-heading">
         <div className="mb-10 flex flex-col gap-4">

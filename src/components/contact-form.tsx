@@ -26,6 +26,7 @@ export function ContactForm() {
       phone: formData.get("phone"),
       email: formData.get("email"),
       service: formData.get("service"),
+      preferredTime: formData.get("preferredTime"),
       message: formData.get("message"),
     };
 
@@ -75,7 +76,6 @@ export function ContactForm() {
             <Input
               id="name"
               name="name"
-              placeholder="Taylor Jenkins"
               required
               autoComplete="name"
             />
@@ -86,7 +86,6 @@ export function ContactForm() {
               <Input
                 id="phone"
                 name="phone"
-                placeholder="0490 748 529"
                 required
                 autoComplete="tel"
                 inputMode="tel"
@@ -98,7 +97,6 @@ export function ContactForm() {
                 id="email"
                 type="email"
                 name="email"
-                placeholder="you@email.com"
                 required
                 autoComplete="email"
               />
@@ -109,7 +107,15 @@ export function ContactForm() {
             <Input
               id="service"
               name="service"
-              placeholder="Whole home steam cleaning"
+              required
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="preferredTime">Preferred date & time</Label>
+            <Input
+              id="preferredTime"
+              name="preferredTime"
+              type="datetime-local"
               required
             />
           </div>
@@ -119,7 +125,7 @@ export function ContactForm() {
               id="message"
               name="message"
               rows={4}
-              placeholder="Let us know about stains, pets, square footage, or access notes."
+              placeholder="Any additional details we should know?"
             />
           </div>
           <Button
