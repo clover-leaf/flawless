@@ -38,9 +38,7 @@ export async function GoogleReviews() {
   let reviews: GoogleReview[] = [];
 
   try {
-    reviews = await sanityClient.fetch(googleReviewsQuery, {
-      next: { revalidate: 1800 }, // 30 minutes
-    });
+    reviews = await sanityClient.fetch(googleReviewsQuery);
   } catch (error) {
     console.error("Failed to fetch Google reviews:", error);
   }
